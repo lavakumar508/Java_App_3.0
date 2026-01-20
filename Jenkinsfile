@@ -103,6 +103,15 @@ pipeline {
                 }
             }
         }
+	stage('SonarQube Analysis') {
+    when { expression { params.action == 'create' } }
+    steps {
+        withSonarQubeEnv('sonarqube') {
+            sh 'mvn clean verify sonar:sonar'
+        }
+    }
+}
+
 
         stage('Docker Push') {
             when { expression { params.action == 'create' } }
